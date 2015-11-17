@@ -1,13 +1,16 @@
 <%@ page import="com.liferay.portal.kernel.util.ParamUtil" %>
+
 <%@ include file="/html/init.jsp" %>
 
 <%
 String tabs1 = ParamUtil.getString(request, "tabs1", "Create Documents");
+String tabs2 = ParamUtil.getString(request, "tabs2", "Basic");
 
-String tabNames = "Create Documents,Create Organizations,Create Pages,Create Roles,Create Sites,Create Users,Create Web Content Articles";
+	String tabNames = "Create Documents,Create Organizations,Create Pages,Create Roles,Create Sites,Create Users,Create Web Content Articles";
+	String nestedTabNames = "Basic, Advanced";
 %>
 
-<liferay-portlet:renderURL var="portletURL"/>
+<liferay-portlet:renderURL var="portletURL" />
 
 <liferay-ui:success key="success" message="Your request completed successfully." />
 <liferay-ui:error key="mustBeSignedIn" message="You must be signed in as an administrator. Please sign in and try again." />
@@ -46,6 +49,8 @@ String tabNames = "Create Documents,Create Organizations,Create Pages,Create Rol
 <!-- Create Documents Errors-->
 <liferay-ui:error key="duplicateDocName" message="One or more documents already exist with the name you've entered. Please try again." />
 <liferay-ui:error key="numberOfDocumentsError" message="Please enter the number of documents you would like to create" />
+<liferay-ui:error key="numberOfFoldersError" message="Please enter the number of folders you would like to create" />
+<liferay-ui:error key="foldersPerFolder" message="Please enter the number of folders you would like nested in each folder" />
 <liferay-ui:error key="baseDocumentNameError" message="Please enter the base name for the documents (i.e. doc, newDoc, testDoc)" />
 <liferay-ui:error key="mustEnterNumberDocuments" message="You have entered invalid data for the number of documents. Please enter an integer value and try again." />
 <liferay-ui:error key="noGroup" message="Cannot assign documents to group; group does not exist. Please try again." />
@@ -63,6 +68,7 @@ String tabNames = "Create Documents,Create Organizations,Create Pages,Create Rol
 <%
 if (tabs1.equals("Create Organizations")) {
 %>
+
 	<portlet:actionURL var="createOrganizationsURL">
 		<portlet:param name="mvcPath" value="/html/view.jsp" />
 	</portlet:actionURL>
@@ -87,11 +93,12 @@ if (tabs1.equals("Create Organizations")) {
 	<aui:form action="<%= createOrganizationsURL %>" method="post">
 		<aui:input name="companyId" type="hidden" value="<%= company.getCompanyId() %>" />
 		<aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
-		<aui:input name="numberOfOrganizations" label="<%= numberOfOrganizationsLabel %>" /><br />
-		<aui:input name="baseOrganizationName" label="<%= baseOrganizationNameLabel %>" /><br />
+		<aui:input label="<%= numberOfOrganizationsLabel %>" name="numberOfOrganizations" /><br />
+		<aui:input label="<%= baseOrganizationNameLabel %>" name="baseOrganizationName" /><br />
 
 		<aui:button type="submit" />
 	</aui:form>
+
 <%
 }
 %>
@@ -99,6 +106,7 @@ if (tabs1.equals("Create Organizations")) {
 <%
 if (tabs1.equals("Create Sites")) {
 %>
+
 	<portlet:actionURL var="createSitesURL">
 		<portlet:param name="mvcPath" value="/html/view.jsp" />
 	</portlet:actionURL>
@@ -123,8 +131,8 @@ if (tabs1.equals("Create Sites")) {
 	<aui:form action="<%= createSitesURL %>" method="post">
 		<aui:input name="companyId" type="hidden" value="<%= company.getCompanyId() %>" />
 		<aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
-		<aui:input name="numberOfSites" label="<%= numberOfSitesLabel %>" /><br />
-		<aui:input name="baseSiteName" label="<%= baseSiteNameLabel %>" /><br />
+		<aui:input label="<%= numberOfSitesLabel %>" name="numberOfSites" /><br />
+		<aui:input label="<%= baseSiteNameLabel %>" name="baseSiteName" /><br />
 
 		<aui:button type="submit" />
 	</aui:form>
@@ -136,6 +144,7 @@ if (tabs1.equals("Create Sites")) {
 <%
 if (tabs1.equals("Create Pages")) {
 %>
+
 	<portlet:actionURL var="createPagesURL">
 	<portlet:param name="mvcPath" value="/html/view.jsp" />
 	</portlet:actionURL>
@@ -169,27 +178,32 @@ if (tabs1.equals("Create Pages")) {
 	<aui:input name="groupId" type="hidden" value="<%= themeDisplay.getScopeGroupId() %>" />
 	<aui:input name="languageId" type="hidden" value="<%= user.getLanguageId() %>" />
 	<aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
-	<aui:input name="numberOfPages" label="<%= numberOfPagesLabel %>" /><br />
-	<aui:input name="basePage" label="<%= basePageLabel %>" /><br />
+	<aui:input label="<%= numberOfPagesLabel %>" name="numberOfPages" /><br />
+	<aui:input label="<%= basePageLabel %>" name="basePage" /><br />
 
-	<aui:select name="group" label="<%= groupLabel %>" >
+	<aui:select label="<%= groupLabel %>" name="group">
 	<aui:option label="<%= defaultOption %>" />
+
 	<%
 	for (Group group : groups) {
 		if (group.isSite() && !group.getDescriptiveName().equals("Control Panel")) {
 	%>
+
 			<aui:option label="<%= group.getDescriptiveName() %>" />
+
 	<%
 		}
 	}
 	%>
+
 	</aui:select><br />
 
-	<aui:input name="numberOfChildPages" label="<%= numberOfChildPagesLabel %>" /><br />
-	<aui:input name="baseChildPage" label="<%= baseChildPageLabel %>" /><br />
+	<aui:input label="<%= numberOfChildPagesLabel %>" name="numberOfChildPages" /><br />
+	<aui:input label="<%= baseChildPageLabel %>" name="baseChildPage" /><br />
 
 	<aui:button type="submit" />
 	</aui:form>
+
 	<%
 }
 %>
@@ -197,6 +211,7 @@ if (tabs1.equals("Create Pages")) {
 <%
 if (tabs1.equals("Create Users")) {
 %>
+
 	<portlet:actionURL var="createUsersURL">
 		<portlet:param name="mvcPath" value="/html/view.jsp" />
 	</portlet:actionURL>
@@ -234,46 +249,59 @@ if (tabs1.equals("Create Users")) {
 	<aui:form action="<%= createUsersURL %>" method="post">
 		<aui:input name="companyId" type="hidden" value="<%= company.getCompanyId() %>" />
 		<aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
-		<aui:input name="numberOfUsers" label="<%= numberOfUsersLabel %>" /><br />
-		<aui:input name="baseScreenName" label="<%= baseScreenNameLabel %>" /><br />
+		<aui:input label="<%= numberOfUsersLabel %>" name="numberOfUsers" /><br />
+		<aui:input label="<%= baseScreenNameLabel %>" name="baseScreenName" /><br />
 
-		<aui:select name="organization" label="<%= organizationLabel %>" >
+		<aui:select label="<%= organizationLabel %>" name="organization">
 			<aui:option label="<%= defaultOption %>" />
+
 			<%
 			for (Organization organization : organizations) {
 			%>
+
 				<aui:option label="<%= organization.getName() %>" />
+
 			<%
 			}
 			%>
+
 		</aui:select><br />
 
-		<aui:select name="group" label="<%= groupLabel %>" >
+		<aui:select label="<%= groupLabel %>" name="group">
 			<aui:option label="<%= defaultOption %>" />
+
 			<%
 			for (Group group : groups) {
 				if (group.isSite() && !group.getDescriptiveName().equals("Control Panel")) {
 			%>
+
 					<aui:option label="<%= group.getDescriptiveName() %>" />
+
 			<%
 				}
 			}
 			%>
+
 		</aui:select><br />
 
-		<aui:select name="role" label="<%= roleLabel %>" helpMessage="<%= roleHelpMessage %>" >
+		<aui:select helpMessage="<%= roleHelpMessage %>" label="<%= roleLabel %>" name="role">
 			<aui:option label="<%= defaultOption %>" />
+
 			<%
 			for (Role role : roles) {
 			%>
+
 				<aui:option label="<%= role.getDescriptiveName() %>" />
+
 			<%
 			}
 			%>
+
 		</aui:select><br />
 
 		<aui:button type="submit" />
 	</aui:form>
+
 <%
 }
 %>
@@ -281,6 +309,7 @@ if (tabs1.equals("Create Users")) {
 <%
 if (tabs1.equals("Create Web Content Articles")) {
 %>
+
 	<portlet:actionURL var="createArticlesURL">
 		<portlet:param name="mvcPath" value="/html/view.jsp" />
 	</portlet:actionURL>
@@ -311,24 +340,29 @@ if (tabs1.equals("Create Web Content Articles")) {
 		<aui:input name="groupId" type="hidden" value="<%= themeDisplay.getScopeGroupId() %>" />
 		<aui:input name="languageId" type="hidden" value="<%= user.getLanguageId() %>" />
 		<aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
-		<aui:input name="numberOfArticles" label="<%= numberOfArticlesLabel %>" /><br />
-		<aui:input name="baseArticle" label="<%= baseArticleLabel %>" /><br />
+		<aui:input label="<%= numberOfArticlesLabel %>" name="numberOfArticles" /><br />
+		<aui:input label="<%= baseArticleLabel %>" name="baseArticle" /><br />
 
-		<aui:select name="group" label="<%= groupLabel %>" >
+		<aui:select label="<%= groupLabel %>" name="group">
 			<aui:option label="<%= defaultOption %>" />
+
 			<%
 			for (Group group : groups) {
 				if (group.isSite() && !group.getDescriptiveName().equals("Control Panel")) {
 			%>
+
 					<aui:option label="<%= group.getDescriptiveName() %>" />
+
 			<%
 				}
 			}
 			%>
+
 		</aui:select><br />
 
 		<aui:button type="submit" />
 	</aui:form>
+
 <%
 }
 %>
@@ -336,9 +370,20 @@ if (tabs1.equals("Create Web Content Articles")) {
 <%
 if (tabs1.equals("Create Documents")) {
 %>
+
+		<liferay-ui:tabs
+		names="<%= nestedTabNames %>"
+		param="tabs2"
+		url="<%= portletURL.toString() %>"
+		/>
+
 	<portlet:actionURL var="createDocumentsURL">
-		<portlet:param name="mvcPath" value="/html/view.jsp" />
+	  <portlet:param name="mvcPath" value="/html/view.jsp" />
 	</portlet:actionURL>
+
+<%
+	if (!tabs2.equals("Advanced")) {
+		%>
 
 	<h4>This portlet creates documents with minimal information.</h4><br />
 
@@ -357,7 +402,7 @@ if (tabs1.equals("Create Documents")) {
 	String baseDocumentLabel= "Enter the base document name (i.e. doc, newDoc, testDoc)";
 	String groupLabel = "(OPTIONAL) Select a site to assign the documents to";
 
-	List<Group> groups = GroupLocalServiceUtil.getGroups(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		List<Group> groups = GroupLocalServiceUtil.getGroups(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	String defaultOption = "(None)";
 	%>
 
@@ -365,31 +410,98 @@ if (tabs1.equals("Create Documents")) {
 		<aui:input name="companyId" type="hidden" value="<%= company.getCompanyId() %>" />
 		<aui:input name="groupId" type="hidden" value="<%= themeDisplay.getScopeGroupId() %>" />
 		<aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
-		<aui:input name="numberOfDocuments" label="<%= numberOfDocumentsLabel %>" /><br />
-		<aui:input name="baseDocument" label="<%= baseDocumentLabel %>" /><br />
+		<aui:input name="tab2" type="hidden" value="<%= tabs2 %>" />
+		<aui:input label="<%= numberOfDocumentsLabel %>" name="numberOfDocuments" /><br />
+		<aui:input label="<%= baseDocumentLabel %>" name="baseDocument" /><br />
 
-		<aui:select name="group" label="<%= groupLabel %>" >
+		<aui:select label="<%= groupLabel %>" name="group">
 			<aui:option label="<%= defaultOption %>" />
+
 			<%
 			for (Group group : groups) {
 				if (group.isSite() && !group.getDescriptiveName().equals("Control Panel")) {
 			%>
+
 					<aui:option label="<%= group.getDescriptiveName() %>" />
+
 			<%
 				}
 			}
 			%>
+
 		</aui:select><br />
 
 		<aui:button type="submit" />
 	</aui:form>
+
 <%
-}
+		}
+		else {
+			%>
+
+	<h4>ADVANCED CONFIGURATION</h4><br />
+
+	Example: if you enter the values "3" and "doc" the portlet will create three documents: doc1, doc2, and doc3.<br /><br />
+
+	*You must be signed in as an administrator in order to create documents<br />
+	*The counter always starts at 1<br />
+	*If no site is selected, the default site will be liferay.com<br /><br />
+
+	<h5>Creating Large Batches of Documents</h5>
+	*If the number of documents is large (over 100), go to <i>Control Panel -> Server Administration -> Log Levels -> Add Category</i>, and add "com.liferay.custom" and set to "INFO" to track progress (batches of 10%)<br />
+	*It may take some time (even for the logs to show) to create a large number of documents, and the page will hang until the process is complete; you can query the database if you are uncertain of the progress<br /><br /><br />
+
+<%
+	String numberOfDocumentsLabel= "Enter the number of documents you would like to create";
+	String baseDocumentLabel= "Enter the base document name (i.e. doc, newDoc, testDoc)";
+	String groupLabel = "(OPTIONAL) Select a site to assign the documents to";
+	String numberOfFoldersLabel = "Enter the number of folders you would like to create";
+	String howDeepToNest = "How deep would you like to nest the folders?";
+	String docsPerFolder = "How many documents per folder?";
+
+	List<Group> groups = GroupLocalServiceUtil.getGroups(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+	String defaultOption = "(None)";
+%>
+
+	<aui:form action="<%= createDocumentsURL %>" method="post">
+	   <aui:input name="companyId" type="hidden" value="<%= company.getCompanyId() %>" />
+	   <aui:input name="groupId" type="hidden" value="<%= themeDisplay.getScopeGroupId() %>" />
+	   <aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
+		<aui:input name="tab2" type="hidden" value="<%= tabs2 %>" />
+		<aui:input label="<%= numberOfDocumentsLabel %>" name="numberOfDocuments" /><br />
+	   <aui:input label="<%= baseDocumentLabel %>" name="baseDocument" /><br />
+	   <aui:input label="<%= numberOfFoldersLabel %>" name="numberOfFolders" /><br />
+	   <aui:input label="<%= howDeepToNest %>" name="foldersPerFolder" /> <br />
+
+		<aui:select label="<%= groupLabel %>" name="group">
+		<aui:option label="<%= defaultOption %>" />
+
+		<%
+			for (Group group : groups) {
+				if (group.isSite() && !group.getDescriptiveName().equals("Control Panel")) {
+		%>
+
+		<aui:option label="<%= group.getDescriptiveName() %>" />
+
+		<%
+				}
+			}
+		%>
+
+	</aui:select><br />
+
+	<aui:button type="submit" />
+</aui:form>
+
+		<%
+		}
+	}
 %>
 
 <%
 if (tabs1.equals("Create Roles")) {
 %>
+
 	<portlet:actionURL var="createRolesURL">
 		<portlet:param name="mvcPath" value="/html/view.jsp" />
 	</portlet:actionURL>
@@ -401,7 +513,6 @@ if (tabs1.equals("Create Roles")) {
 	*You must be signed in as an administrator in order to create roles<br />
 	*The counter always starts at 1<br />
 	*If no role type is selected, the default type will be "Regular Role"<br /><br />
-
 
 	<h5>Creating Large Batches of Roles</h5>
 	*If the number of roles is large (over 100), go to <i>Control Panel -> Server Administration -> Log Levels -> Add Category</i>, and add "com.liferay.custom" and set to "INFO" to track progress (batches of 10%)<br />
@@ -415,12 +526,12 @@ if (tabs1.equals("Create Roles")) {
 	%>
 
 	<aui:form action="<%= createRolesURL %>" method="post">
-		<aui:input name="numberOfRoles" label="<%= numberOfRolesLabel %>" /><br />
-		<aui:input name="baseRole" label="<%= baseRoleLabel %>" /><br />
+		<aui:input label="<%= numberOfRolesLabel %>" name="numberOfRoles" /><br />
+		<aui:input label="<%= baseRoleLabel %>" name="baseRole" /><br />
 		<aui:input name="languageId" type="hidden" value="<%= user.getLanguageId() %>" />
 		<aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
 
-		<aui:select name="roleType" label="<%= roleLabel %>" >
+		<aui:select label="<%= roleLabel %>" name="roleType">
 			<aui:option label="<%= defaultOption %>" />
 			<aui:option label="Regular Role" value="regular" />
 			<aui:option label="Organization Role" value="organization" />
@@ -429,6 +540,7 @@ if (tabs1.equals("Create Roles")) {
 
 		<aui:button type="submit" />
 	</aui:form>
+
 <%
 }
 %>
