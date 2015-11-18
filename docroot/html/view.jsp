@@ -402,7 +402,7 @@ if (tabs1.equals("Create Documents")) {
 	String baseDocumentLabel= "Enter the base document name (i.e. doc, newDoc, testDoc)";
 	String groupLabel = "(OPTIONAL) Select a site to assign the documents to";
 
-		List<Group> groups = GroupLocalServiceUtil.getGroups(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+	List<Group> groups = GroupLocalServiceUtil.getGroups(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	String defaultOption = "(None)";
 	%>
 
@@ -441,37 +441,36 @@ if (tabs1.equals("Create Documents")) {
 
 	<h4>ADVANCED CONFIGURATION</h4><br />
 
-	Example: if you enter the values "3" and "doc" the portlet will create three documents: doc1, doc2, and doc3.<br /><br />
+	Configuration is the same as the "Basic Configuration."<br /><br />
 
-	*You must be signed in as an administrator in order to create documents<br />
-	*The counter always starts at 1<br />
-	*If no site is selected, the default site will be liferay.com<br /><br />
+	*This will create folders, within folders, that each have as many documents as you input. <br />
+	*Example: If you nest 5 folders, with 5 folders, and 5 documents in each folder you will have created<br />
+	5 base folders, with 5 nested each, including a total of 125 documents.<br /><br />
 
 	<h5>Creating Large Batches of Documents</h5>
 	*If the number of documents is large (over 100), go to <i>Control Panel -> Server Administration -> Log Levels -> Add Category</i>, and add "com.liferay.custom" and set to "INFO" to track progress (batches of 10%)<br />
 	*It may take some time (even for the logs to show) to create a large number of documents, and the page will hang until the process is complete; you can query the database if you are uncertain of the progress<br /><br /><br />
 
 <%
-	String numberOfDocumentsLabel= "Enter the number of documents you would like to create";
+	String numberOfDocumentsLabel= "Enter the number of documents you would like to create per folder";
 	String baseDocumentLabel= "Enter the base document name (i.e. doc, newDoc, testDoc)";
 	String groupLabel = "(OPTIONAL) Select a site to assign the documents to";
-	String numberOfFoldersLabel = "Enter the number of folders you would like to create";
-	String howDeepToNest = "How deep would you like to nest the folders?";
-	String docsPerFolder = "How many documents per folder?";
+	String numberOfFoldersLabel = "Enter the number of base folders you would like to create.";
+	String howDeepToNest = "Enter how many folders within folders you would like to create.";
 
 	List<Group> groups = GroupLocalServiceUtil.getGroups(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	String defaultOption = "(None)";
 %>
 
-	<aui:form action="<%= createDocumentsURL %>" method="post">
-	   <aui:input name="companyId" type="hidden" value="<%= company.getCompanyId() %>" />
-	   <aui:input name="groupId" type="hidden" value="<%= themeDisplay.getScopeGroupId() %>" />
-	   <aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
+    <aui:form action="<%= createDocumentsURL %>" method="post">
+        <aui:input name="companyId" type="hidden" value="<%= company.getCompanyId() %>" />
+        <aui:input name="groupId" type="hidden" value="<%= themeDisplay.getScopeGroupId() %>" />
+        <aui:input name="tab" type="hidden" value="<%= tabs1 %>" />
 		<aui:input name="tab2" type="hidden" value="<%= tabs2 %>" />
-		<aui:input label="<%= numberOfDocumentsLabel %>" name="numberOfDocuments" /><br />
-	   <aui:input label="<%= baseDocumentLabel %>" name="baseDocument" /><br />
-	   <aui:input label="<%= numberOfFoldersLabel %>" name="numberOfFolders" /><br />
-	   <aui:input label="<%= howDeepToNest %>" name="foldersPerFolder" /> <br />
+        <aui:input label="<%= howDeepToNest %>" name="foldersPerFolder" /> <br />
+        <aui:input label="<%= numberOfFoldersLabel %>" name="numberOfFolders" /><br /
+        <aui:input label="<%= numberOfDocumentsLabel %>" name="numberOfDocuments" /><br />
+        <aui:input label="<%= baseDocumentLabel %>" name="baseDocument" /><br />
 
 		<aui:select label="<%= groupLabel %>" name="group">
 		<aui:option label="<%= defaultOption %>" />
