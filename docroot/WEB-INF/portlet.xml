@@ -6,12 +6,12 @@
 		<display-name>Create All the Things for Liferay Master</display-name>
 		<portlet-class>com.liferay.custom.CreateAllTheThingsPortlet</portlet-class>
 		<init-param>
-			<name>view-template</name>
-			<value>/html/view.jsp</value>
-		</init-param>
-		<init-param>
 			<name>copy-request-parameters</name>
 			<value>true</value>
+		</init-param>
+		<init-param>
+			<name>view-template</name>
+			<value>/html/view.jsp</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>
